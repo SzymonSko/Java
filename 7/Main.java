@@ -1,6 +1,7 @@
 import javax.swing.*;
 import java.awt.event.*;
 import java.awt.*;
+
  
 public class Main implements ActionListener
 {
@@ -15,15 +16,14 @@ public class Main implements ActionListener
    JButton b8;
    JButton b9;
    JButton b0;
-   JButton bplus,bminus,bmult,brow;
+   JButton bplus,bminus,bmult,bdiv,bback,bsquer,broot,brow;
  
    double x,buf;
    String operation;
- 
    public void actionPerformed(ActionEvent e)                  
-   {                                                           
-      Object target = e.getSource();                           
- 
+   {             
+      t1.setEditable(false);                                     
+      Object target = e.getSource();  
       if(target==b1)                                           
       {                                                        
          t1.setText(t1.getText()+((JButton)target).getText()); 
@@ -116,10 +116,43 @@ public class Main implements ActionListener
          this.operation = "Mult"; 
          System.out.println(operation);                                   
       } 
+      else if(target==bdiv)                                   
+      {                                                        
+         buf=Double.parseDouble(t1.getText());                 
+         t1.setText("");                                       
+         t1.requestFocus();
+         this.operation = "Div"; 
+         System.out.println(operation);     
+         
+         
+      } 
+      else if(target==bback)
+      {
+         if (t1.getText().isEmpty())
+         {
+         t1.setText("0");
+         } 
+         else
+         {
+            t1.setText(t1.getText().substring(0, t1.getText ().length() - 1));
+         } 
+      }
+      else if (target==bsquer)
+      {                                        
+         int k=Integer.parseInt(t1.getText()); 
+         t1.setText(Integer.toString(k*k));    
+         t1.requestFocus();                    
+      }
+
+      else if (target==broot)
+      {                                        
+         int k=Integer.parseInt(t1.getText()); 
+         k = (int) Math.sqrt(k);
+         t1.setText(Integer.toString(k));    
+         t1.requestFocus();                    
+      }
       
       
-      
- 
       else if(target==brow||target==t1)                        
       {
          System.out.println(operation);
@@ -138,6 +171,12 @@ public class Main implements ActionListener
          else if(operation.equals("Mult")){
             x=Double.parseDouble(t1.getText());                   
             x=buf*x;                                              
+            t1.setText(Double.toString(x));                       
+            t1.requestFocus();                                                                 
+         }
+         else if(operation.equals("Div")){
+            x=Double.parseDouble(t1.getText());                   
+            x=buf/x;                                              
             t1.setText(Double.toString(x));                       
             t1.requestFocus();                                                                 
          }
@@ -298,7 +337,7 @@ public class Main implements ActionListener
       bminus=new JButton("-");                                                   
       bminus.addActionListener(this);                                            
       bminus.setFocusable(false);                                                
-      bminus.setToolTipText("dodawanie");                                        
+      bminus.setToolTipText("odejmownaie");                                        
       gbc.gridx=3;                                                              
       gbc.gridy=2;                                                              
       gbc.gridwidth=2;                                                          
@@ -311,7 +350,7 @@ public class Main implements ActionListener
       bmult=new JButton("*");                                                   
       bmult.addActionListener(this);                                            
       bmult.setFocusable(false);                                                
-      bmult.setToolTipText("dodawanie");                                        
+      bmult.setToolTipText("mnozenie");                                        
       gbc.gridx=3;                                                              
       gbc.gridy=3;                                                              
       gbc.gridwidth=2;                                                          
@@ -320,22 +359,74 @@ public class Main implements ActionListener
       gbc.insets=new Insets(5,5,0,5);                                           
       gbl.setConstraints(bmult,gbc);                                            
       c.add(bmult); 
+
+      bdiv=new JButton("/");                                                   
+      bdiv.addActionListener(this);                                            
+      bdiv.setFocusable(false);                                                
+      bdiv.setToolTipText("dzielenie");                                        
+      gbc.gridx=3;                                                              
+      gbc.gridy=4;                                                              
+      gbc.gridwidth=2;                                                          
+      gbc.ipadx=30;                                                             
+      gbc.ipady=0;                                                              
+      gbc.insets=new Insets(5,5,0,5);                                           
+      gbl.setConstraints(bdiv,gbc);                                            
+      c.add(bdiv); 
+
+      bback=new JButton("<=");                                                   
+      bback.addActionListener(this);                                            
+      bback.setFocusable(false);                                                
+      bback.setToolTipText("backspace");                                        
+      gbc.gridx=5;                                                              
+      gbc.gridy=1;                                                              
+      gbc.gridwidth=2;                                                          
+      gbc.ipadx=30;                                                             
+      gbc.ipady=0;                                                              
+      gbc.insets=new Insets(5,5,0,5);                                           
+      gbl.setConstraints(bback,gbc);                                            
+      c.add(bback); 
+
+      bsquer=new JButton("^2");                                                   
+      bsquer.addActionListener(this);                                            
+      bsquer.setFocusable(false);                                                
+      bsquer.setToolTipText("squer");                                        
+      gbc.gridx=5;                                                              
+      gbc.gridy=2;                                                              
+      gbc.gridwidth=2;                                                          
+      gbc.ipadx=30;                                                             
+      gbc.ipady=0;                                                              
+      gbc.insets=new Insets(5,5,0,5);                                           
+      gbl.setConstraints(bsquer,gbc);                                            
+      c.add(bsquer); 
+
+      broot=new JButton("\u221a");                                                   
+      broot.addActionListener(this);                                            
+      broot.setFocusable(false);                                                
+      broot.setToolTipText("squer");                                        
+      gbc.gridx=5;                                                              
+      gbc.gridy=3;                                                              
+      gbc.gridwidth=2;                                                          
+      gbc.ipadx=30;                                                             
+      gbc.ipady=0;                                                              
+      gbc.insets=new Insets(5,5,0,5);                                           
+      gbl.setConstraints(broot,gbc);                                            
+      c.add(broot); 
       
- 
+      
+      
       brow=new JButton("=");                                                    
       brow.addActionListener(this);                                             
       brow.setFocusable(false);                                                 
       brow.setToolTipText("wykonaj działanie");                                 
       gbc.gridx=0;                                                              
-      gbc.gridy=5;                                                              
+      gbc.gridy=4;                                                              
       gbc.gridwidth=4;                                                          
       gbc.ipadx=30;                                                             
       gbc.ipady=0;                                                              
       gbc.insets=new Insets(5,5,5,0);                                           
       gbl.setConstraints(brow,gbc);                                             
-      c.add(brow);                                                              
- 
- 
+      c.add(brow);      
+      
  
       f.pack();                                                                 
       f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);                         
