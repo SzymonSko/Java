@@ -2,7 +2,7 @@ import javax.swing.*;
 import java.awt.event.*;
 import java.awt.*;
 
- 
+
 public class Main implements ActionListener
 {
    JTextField t1;
@@ -16,13 +16,15 @@ public class Main implements ActionListener
    JButton b8;
    JButton b9;
    JButton b0;
-   JButton bplus,bminus,bmult,bdiv,bback,bsquer,broot,brow;
- 
+   JButton bplus,bminus,bmult,bdiv,bback,bsquer,broot,brow,bclear,bswitch;
+
    double x,buf;
    String operation;
    public void actionPerformed(ActionEvent e)                  
-   {             
-      t1.setEditable(false);                                     
+   {            
+
+
+      
       Object target = e.getSource();  
       if(target==b1)                                           
       {                                                        
@@ -90,14 +92,14 @@ public class Main implements ActionListener
          t1.setText(t1.getText()+((JButton)target).getText()); 
          t1.requestFocus();                                    
       }              
- 
+
       else if(target==bplus)                                   
       {                                                        
          buf=Double.parseDouble(t1.getText());                 
          t1.setText("");                                       
          t1.requestFocus();
          this.operation = "Add"; 
-         System.out.println(operation);                                   
+                              
       }
       else if(target==bminus)                                   
       {                                                        
@@ -105,7 +107,7 @@ public class Main implements ActionListener
          t1.setText("");                                       
          t1.requestFocus();
          this.operation = "Substract"; 
-         System.out.println(operation);                                   
+                           
       } 
 
       else if(target==bmult)                                   
@@ -114,7 +116,7 @@ public class Main implements ActionListener
          t1.setText("");                                       
          t1.requestFocus();
          this.operation = "Mult"; 
-         System.out.println(operation);                                   
+                           
       } 
       else if(target==bdiv)                                   
       {                                                        
@@ -122,7 +124,8 @@ public class Main implements ActionListener
          t1.setText("");                                       
          t1.requestFocus();
          this.operation = "Div"; 
-         System.out.println(operation);     
+
+   
          
          
       } 
@@ -139,16 +142,29 @@ public class Main implements ActionListener
       }
       else if (target==bsquer)
       {                                        
-         int k=Integer.parseInt(t1.getText()); 
-         t1.setText(Integer.toString(k*k));    
+         Double k=Double.parseDouble(t1.getText()); 
+         t1.setText(Double.toString(k*k));    
          t1.requestFocus();                    
       }
 
       else if (target==broot)
       {                                        
-         int k=Integer.parseInt(t1.getText()); 
-         k = (int) Math.sqrt(k);
-         t1.setText(Integer.toString(k));    
+         Double k=Double.parseDouble(t1.getText()); 
+         k =  Math.sqrt(k);
+         t1.setText(Double.toString(k));    
+         t1.requestFocus();                    
+      }
+      else if (target==bclear)
+      {                                        
+         t1.setText(null);
+         t1.requestFocus();                    
+      }
+
+      else if (target==bswitch)
+      {                                        
+         Double k=Double.parseDouble(t1.getText()); 
+         k = k * -1;
+         t1.setText(Double.toString(k));    
          t1.requestFocus();                    
       }
       
@@ -175,29 +191,36 @@ public class Main implements ActionListener
             t1.requestFocus();                                                                 
          }
          else if(operation.equals("Div")){
-            x=Double.parseDouble(t1.getText());                   
-            x=buf/x;                                              
-            t1.setText(Double.toString(x));                       
-            t1.requestFocus();                                                                 
+            x=Double.parseDouble(t1.getText());   
+            if (x == 0){
+               JOptionPane.showMessageDialog(null, "You cannot divide by 0", "Login error", JOptionPane.ERROR_MESSAGE);
+            }
+            else{
+               x=buf/x;                                              
+               t1.setText(Double.toString(x));                       
+               t1.requestFocus();   
+            }               
+                                                            
          }
       } 
    }                                                           
- 
+
    void init()                                                                   
    {                                                                            
                                                 
- 
+
       JFrame f=new JFrame();                                                    
       Container c=f.getContentPane();                                           
- 
+
       GridBagLayout gbl=new GridBagLayout();                                    
       GridBagConstraints gbc=new GridBagConstraints();                          
       gbc.fill=GridBagConstraints.HORIZONTAL;                                   
       c.setLayout(gbl);                                                         
- 
- 
- 
-      t1=new JTextField(15);                                                    
+
+
+
+      t1=new JTextField(15);   
+      t1.setEditable(false);                 
       t1.addActionListener(this);                                               
       t1.setHorizontalAlignment(JTextField.RIGHT);                              
       gbc.gridx=0;                                                              
@@ -207,10 +230,10 @@ public class Main implements ActionListener
       gbc.ipady=5;                                                              
       gbc.insets=new Insets(5,5,0,5);                                           
       gbl.setConstraints(t1,gbc);                                               
-      c.add(t1);                                                                
- 
- 
- 
+      c.add(t1);    
+      
+      
+
       b1=new JButton("1");                                                      
       b1.addActionListener(this);                                               
       b1.setFocusable(false);                                                   
@@ -318,9 +341,21 @@ public class Main implements ActionListener
       gbc.insets=new Insets(5,5,0,0);                                           
       gbl.setConstraints(b9,gbc);                                              
       c.add(b9);   
- 
- 
- 
+
+      b0=new JButton("0");                                                      
+      b0.addActionListener(this);                                               
+      b0.setFocusable(false);                                                   
+      gbc.gridx=2;                                                              
+      gbc.gridy=4;                                                              
+      gbc.gridwidth=1;                                                          
+      gbc.ipadx=0;                                                              
+      gbc.ipady=0;                                                              
+      gbc.insets=new Insets(5,5,0,0);                                           
+      gbl.setConstraints(b0,gbc);                                              
+      c.add(b0);   
+
+
+
       bplus=new JButton("+");                                                   
       bplus.addActionListener(this);                                            
       bplus.setFocusable(false);                                                
@@ -333,7 +368,7 @@ public class Main implements ActionListener
       gbc.insets=new Insets(5,5,0,5);                                           
       gbl.setConstraints(bplus,gbc);                                            
       c.add(bplus);                                                             
- 
+
       bminus=new JButton("-");                                                   
       bminus.addActionListener(this);                                            
       bminus.setFocusable(false);                                                
@@ -420,25 +455,49 @@ public class Main implements ActionListener
       brow.setToolTipText("wykonaj działanie");                                 
       gbc.gridx=0;                                                              
       gbc.gridy=4;                                                              
-      gbc.gridwidth=4;                                                          
+      gbc.gridwidth=2;                                                          
       gbc.ipadx=30;                                                             
       gbc.ipady=0;                                                              
       gbc.insets=new Insets(5,5,5,0);                                           
       gbl.setConstraints(brow,gbc);                                             
-      c.add(brow);      
+      c.add(brow);     
+
+      bclear=new JButton("C");                                                      
+      bclear.addActionListener(this);                                               
+      bclear.setFocusable(false);                                                   
+      gbc.gridx=5;                                                              
+      gbc.gridy=0;                                                              
+      gbc.gridwidth=2;                                                          
+      gbc.ipadx=0;                                                              
+      gbc.ipady=0;                                                              
+      gbc.insets=new Insets(5,5,0,0);                                           
+      gbl.setConstraints(bclear,gbc);                                               
+      c.add(bclear); 
+
+      bswitch=new JButton("+/-");                                                      
+      bswitch.addActionListener(this);                                               
+      bswitch.setFocusable(false);                                                   
+      gbc.gridx=5;                                                              
+      gbc.gridy=4;                                                              
+      gbc.gridwidth=2;                                                          
+      gbc.ipadx=0;                                                              
+      gbc.ipady=0;                                                              
+      gbc.insets=new Insets(5,5,0,0);                                           
+      gbl.setConstraints(bswitch,gbc);                                               
+      c.add(bswitch); 
       
- 
+
       f.pack();                                                                 
       f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);                         
       f.setTitle("Calculator");                                                       
       f.setVisible(true);                                                       
    }                                                                            
- 
+
    public static void main(String[] args)          
    {                                               
       //do wersji 1.4                              
       //new Kalk().init();                         
- 
+
       //od wersji 1.5                              
          SwingUtilities.invokeLater(new Runnable() 
       {                                            
